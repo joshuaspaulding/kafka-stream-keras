@@ -20,44 +20,44 @@ import org.junit.Test;
 
 public class StreamsStarterAppTest {
 
-  private TopologyTestDriver testDriver;
-  private ConsumerRecordFactory<String, String> recordFactory = new ConsumerRecordFactory<>(
-      new StringSerializer(), new StringSerializer()
-  );
+    private TopologyTestDriver testDriver;
+    private ConsumerRecordFactory<String, String> recordFactory = new ConsumerRecordFactory<>(
+            new StringSerializer(), new StringSerializer()
+    );
 
-  @Before
-  public void setUp() {
+    @Before
+    public void setUp() {
 
-    Properties config = new Properties();
-    config.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, "streams-starter-app");
-    config.setProperty(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
-    config.setProperty(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG,
-        Serdes.String().getClass().getName());
-    config.setProperty(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
-        Serdes.String().getClass().getName());
+        Properties config = new Properties();
+        config.setProperty(StreamsConfig.APPLICATION_ID_CONFIG, "streams-starter-app");
+        config.setProperty(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "dummy:1234");
+        config.setProperty(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG,
+                Serdes.String().getClass().getName());
+        config.setProperty(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG,
+                Serdes.String().getClass().getName());
 
-    StreamsBuilder builder = new StreamsBuilder();
+        StreamsBuilder builder = new StreamsBuilder();
 
-    KStream<String, String> kStream = builder.stream("streams-input");
-    // do stuff
-    kStream.to("streams-output");
+        KStream<String, String> kStream = builder.stream("streams-input");
+        // do stuff
+        kStream.to("streams-output");
 
-    testDriver = new TopologyTestDriver(builder.build(), config);
-  }
+        testDriver = new TopologyTestDriver(builder.build(), config);
+    }
 
-  @After
-  public void tearDown() {
-    testDriver.close();
-  }
+    @After
+    public void tearDown() {
+        testDriver.close();
+    }
 
-  @Test
-  public void shouldFlushStoreForFirstInput() {
-    testDriver.pipeInput(recordFactory.create("streams-input", null, "hello"));
-    OutputVerifier.compareKeyValue(testDriver.readOutput("streams-output",
-        new StringDeserializer(),
-        new StringDeserializer()),
-        null,
-        "hello");
-    Assert.assertNull(testDriver.readOutput("streams-output"));
-  }
+    @Test
+    public void shouldFlushStoreForFirstInput() {
+        testDriver.pipeInput(recordFactory.create("streams-input", null, "hello"));
+        OutputVerifier.compareKeyValue(testDriver.readOutput("streams-output",
+                new StringDeserializer(),
+                new StringDeserializer()),
+                null,
+                "hello");
+        Assert.assertNull(testDriver.readOutput("streams-output"));
+    }
 }

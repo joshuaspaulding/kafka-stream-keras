@@ -3,7 +3,7 @@ plugins {
     application
 }
 
-group = "spaulding"
+group = "app.spaulding"
 version = "1.0-SNAPSHOT"
 
 repositories {
@@ -13,12 +13,16 @@ repositories {
 dependencies {
     compile("org.apache.kafka:kafka-streams:2.1.0")
     compile("org.slf4j:slf4j-simple:1.7.25")
-      testCompile("org.apache.kafka:kafka-streams-test-utils:2.1.0")
+    compile("org.deeplearning4j:deeplearning4j-core:1.0.0-beta3")
+    compile("org.deeplearning4j:deeplearning4j-modelimport:1.0.0-beta3")
+    compile("org.nd4j:nd4j-native-platform:1.0.0-beta3")
+    compile("com.google.guava:guava:19.0")
+    testCompile("org.apache.kafka:kafka-streams-test-utils:2.1.0")
     testCompile("junit", "junit", "4.12")
 }
 
 application {
-  mainClassName = "app.spaulding.kafka.streams.StreamsStarterApp"
+    mainClassName = "app.spaulding.kafka.streams.StreamsStarterApp"
 }
 
 configurations.all {
